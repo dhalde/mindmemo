@@ -9,12 +9,17 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 
+// const corsOptions = {
+//   origin: "https://mindmemo-auth.vercel.app",
+// };
+
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // Allow non-secure cookies for testing
 }));
+// app.use(cors(corsOptions));
 app.use(cors({origin: true, credentials: true}))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
