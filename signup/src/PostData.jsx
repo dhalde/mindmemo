@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 function PostData() {
-  const postTask = async (title, url, notes, dataTime, userId) => {
+  const postTask = async (title, url, notes, dataDate, userId) => {
     const response = await fetch(
       `${import.meta.env.VITE_APP_SERVER_URL}/userDetails/userMemo`,
       {
@@ -14,7 +14,7 @@ function PostData() {
           title: title,
           url: url,
           notes: notes,
-          dataTime: dataTime,
+          dataDate: dataDate,
           userId: userId,
         }),
       },
@@ -95,7 +95,9 @@ function PostData() {
                 d="M9,42h5v-8H6v5C6,40.657,7.343,42,9,42z"></path>
             </svg>
             <div className="text-[#030C2D] text-base font-Inter font-medium">
-              Visit Google Calendar
+              <a href="https://calendar.google.com/calendar/u/0/r/" target="_blank">
+                Visit Google Calendar
+              </a>
             </div>
           </a>
         </div>
