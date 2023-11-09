@@ -14,11 +14,11 @@ const app = express();
 app.use(cookieParser());
 
 // Function to add a new entry
-async function addEntry(userId, title, url, dataTime, notes) {
+async function addEntry(gId, title, url, dataTime, notes) {
   try {
     const existingMemo = await prisma.userMemoDetails.findFirst({
       where: {
-        userId: userId,
+        googleId: gId,
         url: url,
       },
     });
@@ -139,19 +139,22 @@ async function userMemoTask(res, title, url, dateTiming, notes, accessToken, ref
 // }
 
 const userMemo = async (req, res) => {
-  const { title, url, dataDate, notes, userId } = req.body;
-  console.log(req.body);
-  // const fullDateTime = `${dataDate} ${time}`;
-  const dateTiming = new Date(dataDate).toISOString();
+  // console.log("redirected from new genrated token");
+  // console.log(req);
+  // console.log(req.user.googleId);
+  const gId = req.user.googleId;
+  const { title, url, dataTime, notes} = req.body;
+  const dateTiming = new Date(dataTime).toISOString();
+
   try {
     // const user = req.user;
-    const newEntry = await addEntry(userId, title, url, dateTiming, notes);
+    const newEntry = await addEntry(gId, title, url, dateTiming, notes);
 
     //Calling Calendar Event function
     // userMemmoEvent(title, url,dateTiming, notes);
     const user = await prisma.user.findUnique({
       where: {
-        id: userId,
+        googleId: gId,
       },
       select: {
         accessToken: true,

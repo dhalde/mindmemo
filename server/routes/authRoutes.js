@@ -1,14 +1,17 @@
 const express = require("express");
-const AuthenticationController = require("../controllers/AuthenticationController");
+const tokenAccess = require('../middleware/tokenManager');
 const passport = require("passport");
+const authController = require('../controllers/authController');
+const requireToken = require("../middleware/requireRefreshToken")
 const app = express();
-const { notLoggedIn } = require("../middleware/authentication");
 
 // const {notLoggedIn} = require('../middlewares/authentication')
 
 //   app.post('/signup', notLoggedIn, AuthenticationController.signUp)
 
 // app.post('/login', notLoggedIn, AuthenticationController.login)
+
+app.get("/refresh-access-token", requireToken.requiresRefreshToken, authController.refreshAccessToken);
 
 app.get(
   "/auth/google",
@@ -35,12 +38,13 @@ app.get("/protected", (req, res) => {
   console.log("------api------");
   console.log(req.user);
   console.log("------------");
-  // AuthenticationController.googleCallback(req, res)
-  res.redirect(
-    `https://mindmemo-auth.vercel.app/?data=${encodeURIComponent(
-      JSON.stringify(req.user),
-    )}`,
-  );
+  tokenAccess.generateToken(req, res)
+  tokenAccess.generateRefreshToken(req,res)
+  // res.redirect(
+  //   `https://mindmemo-auth.vercel.app/?data=${encodeURIComponent(
+  //     JSON.stringify(req.user),
+  //   )}`,
+  // );
 });
 
 app.get("/auth/failure", (req, res) => {
