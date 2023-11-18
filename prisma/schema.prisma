@@ -15,8 +15,8 @@ model userMemoDetails {
   url      String  
   dataTime DateTime     
   notes    String?
-  userId   Int        // Add a field for the foreign key
-  user     User      @relation(fields: [userId], references: [id])
+  userId   String           // Add a field for the foreign key
+  user     User      @relation(fields: [userId], references: [googleId])
 
   @@index([userId])
 }

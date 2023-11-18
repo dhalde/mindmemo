@@ -18,7 +18,7 @@ async function addEntry(gId, title, url, dataTime, notes) {
   try {
     const existingMemo = await prisma.userMemoDetails.findFirst({
       where: {
-        googleId: gId,
+        userId: gId,
         url: url,
       },
     });
@@ -33,7 +33,7 @@ async function addEntry(gId, title, url, dataTime, notes) {
       url: url,
       dataTime: dataTime,
       notes: notes,
-      userId: userId, // Associate the memo with the specific user
+      userId: gId, // Associate the memo with the specific user
     };
     return await prisma.userMemoDetails.create({ data: userMemo });
   } catch (error) {
